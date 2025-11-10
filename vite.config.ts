@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  base: '/keybreaker/', // ← ADD THIS LINE
+  base: '/keybreaker/', // for GitHub Pages – remove or change if using a custom domain
   plugins: [react()],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -51,7 +51,7 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    outDir: 'build',
+    outDir: 'dist', // ✅ changed for Vercel
   },
   server: {
     port: 3000,
