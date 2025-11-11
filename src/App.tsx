@@ -257,8 +257,7 @@ export default function App() {
       {/* Logo */}
      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-new">
   <div className="flex items-center gap-3">
-    <Keyboard className="size-8 text-gray-800" />
-    <img src={Logo} alt="TypeSpeed Logo" className="h-8 w-auto" />
+    <img src={Logo} alt="Logo" className="h-8 w-8" />
   </div>
 </div>
 
