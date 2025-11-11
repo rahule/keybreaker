@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { RotateCcw, Keyboard, Share2, Download } from 'lucide-react';
+import { RotateCcw, Share2, Download } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Progress } from './components/ui/progress';
 import html2canvas from 'html2canvas';
 import { ResultsCard } from './components/ResultsCard';
-import { toast, Toaster } from 'sonner@2.0.3';
+import { toast, Toaster } from 'sonner';
 // import Logo from './Logo-Key.svg';
 import './styles/custom.css';
 
@@ -23,7 +23,6 @@ const sampleTexts = [
 
 export default function App() {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'finished'>('idle');
-  const [targetText, setTargetText] = useState('');
   const [targetWords, setTargetWords] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentInput, setCurrentInput] = useState('');
@@ -36,7 +35,6 @@ export default function App() {
   const initializeTest = () => {
     const randomText = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
     const words = randomText.split(' ');
-    setTargetText(randomText);
     setTargetWords(words);
     setCurrentWordIndex(0);
     setCurrentInput('');
@@ -326,7 +324,7 @@ export default function App() {
               onChange={handleInputChange}
               className="opacity-0 absolute pointer-events-none"
               autoFocus
-              disabled={gameState === 'finished'}
+              disabled={false}
             />
 
             {/* Instruction */}
