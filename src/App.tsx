@@ -6,7 +6,7 @@ import { Progress } from './components/ui/progress';
 import html2canvas from 'html2canvas';
 import { ResultsCard } from './components/ResultsCard';
 import { toast, Toaster } from 'sonner@2.0.3';
-import Logo from './images/Logo-Key.svg';
+// import Logo from './Logo-Key.svg';
 import './styles/custom.css';
 
 // Sample texts for the typing test
@@ -255,11 +255,11 @@ export default function App() {
       onClick={handleScreenClick}
     >
       {/* Logo */}
-     <div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-new">
+     {/*<div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-new">
   <div className="flex items-center gap-3">
-    <img src={Logo} alt="Logo" className="h-8 w-8" />
+    <img src="/Logo-Key.svg" alt="Logo" className="h-8 w-8" />
   </div>
-</div>
+</div>*/}
 
       <AnimatePresence mode="wait">
         {gameState !== 'finished' ? (
