@@ -6,8 +6,8 @@ import { Progress } from './components/ui/progress';
 import html2canvas from 'html2canvas';
 import { ResultsCard } from './components/ResultsCard';
 import { toast, Toaster } from 'sonner@2.0.3';
-import './custom.css';
-import logo from './images/Logo-Key.svg';
+import Logo from './images/Logo-Key.svg';
+import './styles/custom.css';
 
 // Sample texts for the typing test
 const sampleTexts = [
@@ -255,13 +255,12 @@ export default function App() {
       onClick={handleScreenClick}
     >
       {/* Logo */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-type">
+     <div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-new">
   <div className="flex items-center gap-3">
-    <img src={logo} alt="KeyBreaker Logo" className="h-12 w-auto" />
-    <span className="text-2xl text-gray-800"></span>
+    <Keyboard className="size-8 text-gray-800" />
+    <img src={Logo} alt="TypeSpeed Logo" className="h-8 w-auto" />
   </div>
 </div>
-
 
       <AnimatePresence mode="wait">
         {gameState !== 'finished' ? (
@@ -279,7 +278,7 @@ export default function App() {
             </div>
 
             {/* Text Display */}
-            <div className="text-5xl leading-relaxed mb-8 select-none type-content">
+            <div className="text-5xl leading-relaxed mb-8 select-none">
               {targetWords.map((word, index) => {
                 let className = 'inline-block mr-4 transition-all duration-200';
 
@@ -438,7 +437,7 @@ export default function App() {
       )}
       
       {/* Footer */}
-      <div className="fixed bottom-4 w-full text-center powerd-by" style={{ fontSize: '12px', color: '#f2f2f2' }}>
+      <div className="fixed bottom-4 w-full text-center" style={{ fontSize: '12px', color: '#c2c2c2' }}>
         Powered by Edathil
       </div>
       
