@@ -256,7 +256,7 @@ export default function App() {
 
 <div className="absolute top-8 left-1/2 transform -translate-x-1/2 logo-new">
   <div className="flex items-center gap-3">
-    <img src={Logo} alt="Logo" />
+    <img src="/Logo-Key.svg" alt="Logo" />
   </div>
 </div>
 
