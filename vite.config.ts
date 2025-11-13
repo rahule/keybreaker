@@ -54,7 +54,7 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    outDir: 'build', // if using Vercel, you can also switch to 'dist'
+    outDir: 'dist',
   },
   server: {
     port: 3000,
