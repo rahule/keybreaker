@@ -1,5 +1,3 @@
-import { Keyboard } from 'lucide-react';
-
 interface ResultsCardProps {
   wpm: number;
   accuracy: number;
@@ -8,37 +6,46 @@ interface ResultsCardProps {
 
 export function ResultsCard({ wpm, accuracy, totalWords }: ResultsCardProps) {
   return (
-    <div className="p-12 rounded-3xl shadow-2xl" id="results-card" style={{ backgroundColor: '#ffffff' }}>
+    <div
+      id="results-card"
+      style={{
+        backgroundColor: '#ffffff',
+        width: '600px',
+        padding: '48px',
+        borderRadius: '24px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }}
+    >
       {/* Logo */}
-      <div className="flex items-center justify-center gap-3 mb-8">
-        <Keyboard className="size-10" style={{ color: '#1f2937' }} />
-        <span className="text-3xl" style={{ color: '#1f2937' }}>TypeSpeed</span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '32px' }}>
+        <img src="/Logo-Key.svg" alt="Keybreaker" style={{ height: '50px' }} />
       </div>
 
-      <h1 className="text-5xl mb-12 text-center" style={{ color: '#1f2937' }}>Test Complete!</h1>
+      <h1 style={{ fontSize: '48px', marginBottom: '48px', textAlign: 'center', color: '#1f2937', fontWeight: '700' }}>Test Complete!</h1>
 
-      <div className="space-y-6">
-        <div className="rounded-2xl p-8" style={{ background: 'linear-gradient(to bottom right, #eff6ff, #faf5ff)' }}>
-          <div className="mb-2 text-center" style={{ color: '#4b5563' }}>Words per Minute</div>
-          <div className="text-7xl text-center" style={{ color: '#1f2937' }}>{wpm}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div style={{ borderRadius: '16px', padding: '32px', background: 'linear-gradient(to bottom right, #eff6ff, #faf5ff)' }}>
+          <div style={{ marginBottom: '8px', textAlign: 'center', color: '#4b5563', fontSize: '16px' }}>Words per Minute</div>
+          <div style={{ fontSize: '72px', textAlign: 'center', color: '#1f2937', fontWeight: '700' }}>{wpm}</div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="rounded-2xl p-8" style={{ backgroundColor: '#f9fafb' }}>
-            <div className="mb-2 text-center" style={{ color: '#4b5563' }}>Accuracy</div>
-            <div className="text-5xl text-center" style={{ color: '#1f2937' }}>{accuracy}%</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+          <div style={{ borderRadius: '16px', padding: '32px', backgroundColor: '#f9fafb' }}>
+            <div style={{ marginBottom: '8px', textAlign: 'center', color: '#4b5563', fontSize: '16px' }}>Accuracy</div>
+            <div style={{ fontSize: '48px', textAlign: 'center', color: '#1f2937', fontWeight: '700' }}>{accuracy}%</div>
           </div>
 
-          <div className="rounded-2xl p-8" style={{ backgroundColor: '#f9fafb' }}>
-            <div className="mb-2 text-center" style={{ color: '#4b5563' }}>Words Typed</div>
-            <div className="text-5xl text-center" style={{ color: '#1f2937' }}>{totalWords}</div>
+          <div style={{ borderRadius: '16px', padding: '32px', backgroundColor: '#f9fafb' }}>
+            <div style={{ marginBottom: '8px', textAlign: 'center', color: '#4b5563', fontSize: '16px' }}>Words Typed</div>
+            <div style={{ fontSize: '48px', textAlign: 'center', color: '#1f2937', fontWeight: '700' }}>{totalWords}</div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="mt-8 text-center text-sm" style={{ color: '#9ca3af' }}>
-        typespeed.app
+      <div style={{ marginTop: '32px', textAlign: 'center', fontSize: '14px', color: '#9ca3af' }}>
+        keybreaker.lol
       </div>
     </div>
   );

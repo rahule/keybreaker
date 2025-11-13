@@ -6,7 +6,6 @@ import { Progress } from './components/ui/progress';
 import html2canvas from 'html2canvas';
 import { ResultsCard } from './components/ResultsCard';
 import { toast, Toaster } from 'sonner';
-import Logo from '/Logo-Key.svg';
 import './styles/custom.css';
 
 // Sample texts for the typing test
@@ -125,125 +124,169 @@ export default function App() {
   // Download results as image
   const downloadResults = async () => {
     const card = document.getElementById('results-card');
-    if (card) {
-      try {
-        toast.loading('Generating image...');
-        const canvas = await html2canvas(card, {
-          backgroundColor: '#ffffff',
-          scale: 2,
-          logging: false,
-        });
-        
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `typespeed-${results?.wpm}wpm.png`;
-            link.click();
-            URL.revokeObjectURL(url);
-            toast.success('Downloaded!');
-          }
-        }, 'image/png');
-      } catch (error) {
-        toast.error('Failed to generate image');
-      }
+    if (!card) {
+      toast.error('Results card not found');
+      return;
+    }
+
+    const loadingToast = toast.loading('Generating image...');
+
+    try {
+      // Small delay to ensure DOM is fully rendered
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const canvas = await html2canvas(card, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        onclone: (clonedDoc) => {
+          // Remove all stylesheets that contain oklch colors
+          const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
+          stylesheets.forEach(sheet => sheet.remove());
+
+          // The ResultsCard already has all inline styles, so it doesn't need stylesheets
+        }
+      });
+
+      canvas.toBlob((blob) => {
+        toast.dismiss(loadingToast);
+
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `keybreaker-result-${Math.floor(Math.random() * 1000000)}.png`;
+          link.click();
+          URL.revokeObjectURL(url);
+          toast.success('Downloaded!');
+        } else {
+          toast.error('Failed to generate image');
+        }
+      }, 'image/png');
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      console.error('Download error:', error);
+      toast.error('Failed to generate image. Check console for details.');
     }
   };
 
   // Share to social media
   const shareToSocial = async (platform: 'whatsapp' | 'twitter' | 'instagram') => {
     const card = document.getElementById('results-card');
-    if (card && results) {
-      try {
-        toast.loading('Generating image...');
-        const canvas = await html2canvas(card, {
-          backgroundColor: '#ffffff',
-          scale: 2,
-          logging: false,
-          useCORS: true,
-        });
-        
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            const file = new File([blob], `typespeed-${results.wpm}wpm.png`, { type: 'image/png' });
-            const text = `I just scored ${results.wpm} WPM with ${results.accuracy}% accuracy on TypeSpeed! 🚀`;
-            
-            toast.dismiss();
-            
-            // For Instagram, always try native share or download
-            if (platform === 'instagram') {
-              if (navigator.share) {
-                try {
-                  await navigator.share({
-                    files: [file],
-                    title: 'TypeSpeed Results',
-                    text: text,
-                  });
-                  toast.success('Shared successfully!');
-                  return;
-                } catch (err: any) {
-                  // If user cancelled, don't show error
-                  if (err.name === 'AbortError') {
-                    return;
-                  }
-                }
+    if (!card) {
+      toast.error('Results card not found');
+      return;
+    }
+
+    if (!results) {
+      toast.error('No results available');
+      return;
+    }
+
+    const loadingToast = toast.loading('Generating image...');
+
+    try {
+      // Small delay to ensure DOM is fully rendered
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const canvas = await html2canvas(card, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        onclone: (clonedDoc) => {
+          // Remove all stylesheets that contain oklch colors
+          const stylesheets = clonedDoc.querySelectorAll('link[rel="stylesheet"], style');
+          stylesheets.forEach(sheet => sheet.remove());
+
+          // The ResultsCard already has all inline styles, so it doesn't need stylesheets
+        }
+      });
+
+      canvas.toBlob(async (blob) => {
+        toast.dismiss(loadingToast);
+
+        if (!blob) {
+          toast.error('Failed to generate image');
+          return;
+        }
+
+        const file = new File([blob], `keybreaker-result-${Math.floor(Math.random() * 1000000)}.png`, { type: 'image/png' });
+        const text = `I just scored ${results.wpm} WPM with ${results.accuracy}% accuracy on Keybreaker! 🚀`;
+
+        // For Instagram, always try native share or download
+        if (platform === 'instagram') {
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: 'Keybreaker Results',
+                text: text,
+              });
+              toast.success('Shared successfully!');
+              return;
+            } catch (err: any) {
+              // If user cancelled, don't show error
+              if (err.name === 'AbortError') {
+                return;
               }
-              
-              // Fallback: download the image
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement('a');
-              link.href = url;
-              link.download = `typespeed-${results.wpm}wpm.png`;
-              link.click();
-              URL.revokeObjectURL(url);
-              toast.success('Image downloaded! Upload it to Instagram from your device.');
+            }
+          }
+
+          // Fallback: download the image
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `keybreaker-result-${Math.floor(Math.random() * 1000000)}.png`;
+          link.click();
+          URL.revokeObjectURL(url);
+          toast.success('Image downloaded! Upload it to Instagram from your device.');
+          return;
+        }
+
+        // Try native share API first (works best on mobile)
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'Keybreaker Results',
+              text: text,
+            });
+            toast.success('Shared successfully!');
+            return;
+          } catch (err: any) {
+            // If user cancelled, don't show error
+            if (err.name === 'AbortError') {
               return;
             }
-            
-            // Try native share API first (works best on mobile)
-            if (navigator.share) {
-              try {
-                await navigator.share({
-                  files: [file],
-                  title: 'TypeSpeed Results',
-                  text: text,
-                });
-                toast.success('Shared successfully!');
-                return;
-              } catch (err: any) {
-                // If user cancelled, don't show error
-                if (err.name === 'AbortError') {
-                  return;
-                }
-                // Continue to fallback for other errors
-              }
-            }
-            
-            // Fallback to platform-specific URLs
-            let shareUrl = '';
-            
-            switch (platform) {
-              case 'whatsapp':
-                shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-                break;
-              case 'twitter':
-                shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-                break;
-            }
-            
-            if (shareUrl) {
-              window.open(shareUrl, '_blank', 'width=600,height=400');
-              toast.success('Opening share dialog...');
-            }
-          } else {
-            toast.error('Failed to generate image');
+            // Continue to fallback for other errors
           }
-        }, 'image/png');
-      } catch (error) {
-        console.error('Share error:', error);
-        toast.error('Failed to generate image');
-      }
+        }
+
+        // Fallback to platform-specific URLs
+        let shareUrl = '';
+
+        switch (platform) {
+          case 'whatsapp':
+            shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            break;
+          case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            break;
+        }
+
+        if (shareUrl) {
+          window.open(shareUrl, '_blank', 'width=600,height=400');
+          toast.success('Opening share dialog...');
+        }
+      }, 'image/png');
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      console.error('Share error:', error);
+      toast.error('Failed to generate image. Check console for details.');
     }
   };
 
@@ -428,7 +471,7 @@ export default function App() {
       
       {/* Hidden results card for image generation */}
       {results && (
-        <div className="fixed -left-[9999px] top-0">
+        <div style={{ position: 'absolute', left: '-9999px', top: 0, opacity: 0, pointerEvents: 'none' }}>
           <ResultsCard
             wpm={results.wpm}
             accuracy={results.accuracy}
